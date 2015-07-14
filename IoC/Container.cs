@@ -100,7 +100,34 @@ namespace IoC
 
         public IQueryable Query
         {
-            get { return db.GetTable<T>(); }
+            get { return db.GetTable<DataContext>(); }
+        }
+
+        public void Save()
+        {
+            db.SubmitChanges();
+        }
+
+        public Repository() { }
+    }
+
+    public interface IEmailService
+    {
+        IQueryable Query { get; }
+        void Save();
+    }
+
+    public class EmailService : IEmailService
+    {
+        DataContext db;
+        public EmailService(DataContext db)
+        {
+            this.db = db;
+        }
+
+        public IQueryable Query
+        {
+            get { return db.GetTable<DataContext>(); }
         }
 
         public void Save()
