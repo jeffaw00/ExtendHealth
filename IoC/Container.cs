@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Linq;
 
 namespace IoC
 {
@@ -80,6 +81,31 @@ namespace IoC
             this.rType = rType;
             this.lifestyleType = lifestyleType;
             this.itemValue = null;
+        }
+    }
+
+    public interface IRepository
+    {
+        IQueryable Query {get;}
+        void Save();
+    }
+
+    public class Repository : IRepository
+    {
+        DataContext db;
+        public Repository(DataContext db)
+        {
+            this.db = db;
+        }
+
+        public IQueryable Query
+        {
+            get { return db.GetTable<T>(); }
+        }
+
+        public void Save()
+        {
+            db.SubmitChanges();
         }
     }
 }
